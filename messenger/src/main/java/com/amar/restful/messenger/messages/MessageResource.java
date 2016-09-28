@@ -2,6 +2,7 @@ package com.amar.restful.messenger.messages;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -22,43 +23,41 @@ import com.amar.restful.messenger.service.MessageService;
 public class MessageResource {
 
 	MessageService messageService = new MessageService();
-	
+
 	@GET
-	public List<Message> getMessages(@QueryParam("year") int year, 
-			@QueryParam("start") int start,
-			@QueryParam("size") int size) {
-		if(year > 0) {
-			return messageService.getMessagesByYear(year);
+	public List<Message> getMessages(@BeanParam MessageFilterBean messageFilterBean) {
+		if (messageFilterBean.getYear() > 0) {
+			return messageService.getMessagesByYear(messageFilterBean.getYear());
 		}
-		if(start >=0 && size > 0) {
-			return messageService.getMessagesPaginated(start, size);
+		if (messageFilterBean.getStart() >= 0 && messageFilterBean.getSize() > 0) {
+			return messageService.getMessagesPaginated(messageFilterBean.getStart(), messageFilterBean.getSize());
 		}
-		
+
 		return messageService.getMessages();
 	}
-	
+
 	@GET
 	@Path("/{messageId}")
-	public Message getMessageById(@PathParam ("messageId") long messageId) {
+	public Message getMessageById(@PathParam("messageId") long messageId) {
 		return messageService.getMessage(messageId);
 	}
-	
+
 	@POST
 	public Message addMessage(Message message) {
 		return messageService.addMessage(message);
 	}
-	
+
 	@PUT
 	@Path("/{messageId}")
-	public Message updateMessage(@PathParam ("messageId") long id, Message message) {
+	public Message updateMessage(@PathParam("messageId") long id, Message message) {
 		message.setId(id);
 		return messageService.updateMessage(message);
 	}
-	
+
 	@DELETE
 	@Path("/{messageId}")
 	public void deleteMessage(@PathParam("messageId") long id) {
 		messageService.removeMessage(id);
 	}
-	
+
 }
