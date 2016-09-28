@@ -2,17 +2,21 @@ package com.amar.restful.messenger.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.amar.restful.messenger.database.Database;
+import com.amar.restful.messenger.model.Comment;
 import com.amar.restful.messenger.model.Message;
 
 public class MessageService {
 	private Map<Long, Message> messages = Database.getMessages();
 	
 	public MessageService() {
-		messages.put(1L, new Message(1, "Message 1", "Amar" ));
+		Message m1  = new Message(1, "Message 1", "Amar" );
+		m1.getComments().put(1L, new Comment(1L, "Comment 123", new Date(), "Amar"));
+		messages.put(1L, m1);
 		messages.put(2L, new Message(2, "Message 2", "Amar" ));
 	}
 	
