@@ -1,5 +1,6 @@
 package com.amar.restful.messenger.messages;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -11,7 +12,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 import com.amar.restful.messenger.model.Message;
 import com.amar.restful.messenger.service.MessageService;
@@ -42,8 +46,12 @@ public class MessageResource {
 	}
 
 	@POST
-	public Message addMessage(Message message) {
-		return messageService.addMessage(message);
+	public Response addMessage(Message message, @Context UriInfo uriInfo) {
+		Message messageCreated = messageService.addMessage(message);
+		String msgId = String.valueOf(messageCreated.getId());
+		URI uri = uriInfo.getAbsolutePathBuilder().path(msgId).build();
+		// return Response.status(Status.CREATED).entity(messageCreated).build();
+		return Response.created(uri).entity(messageCreated).build();
 	}
 
 	@PUT
