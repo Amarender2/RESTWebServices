@@ -31,7 +31,7 @@ public class CommentService {
 		Message message = messages.get(messageId);
 		if(message == null) {
 			//throw new WebApplicationException(Status.NOT_FOUND);
-			throw new NotFoundException();
+			throw new NotFoundException(response);
 		}
 		Map<Long, Comment> comments = message.getComments();
 		ErrorMessage errorMessage1 = new ErrorMessage("aaaaaaaaa", 123, "www.ebay.com");
