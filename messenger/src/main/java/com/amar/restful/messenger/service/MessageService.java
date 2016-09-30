@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.amar.restful.messenger.database.Database;
+import com.amar.restful.messenger.exception.DataNotFoundException;
 import com.amar.restful.messenger.model.Comment;
 import com.amar.restful.messenger.model.Message;
 
@@ -45,7 +46,11 @@ public class MessageService {
 	}
 	
 	public Message getMessage(long id) {
-		return messages.get(id);
+		Message message = messages.get(id);
+		if(message == null) {
+			throw new DataNotFoundException("Message with id: " + id + " not found");
+		}
+		return message;
 	}
 	
 	public Message addMessage(Message message) {
